@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import co.edu.unac.poo2.cl02.items.*;
 
@@ -40,6 +41,7 @@ public class Main {
             System.out.println("2. Create Account");
             System.out.println("3. View Users");
             System.out.println("4. View Accounts");
+            System.out.println("5. Search User by Name");
             System.out.println("0. Exit");
             System.out.println("------------------------");
             option = scan.nextInt();
@@ -70,25 +72,33 @@ public class Main {
                         System.out.print("Account ID: ");
                         account.accountId = scan.nextInt();
                         System.out.print("User ID: ");
-                        account.user = findUser(userId);
-                        account.openedDate = new Date();
-                        accounts.put(userId, account);
-                        System.out.println("New Account: " + account.toString());
+                        if (findUser(userId) != null) {
+                            account.user = findUser(userId);
+                            account.openedDate = new Date();
+                            accounts.put(userId, account);
+                            System.out.println("New Account: " + account.toString());
+                        } else {
+                            System.out.println("User not found");
+                        }                        
 
                     } else {
                         System.out.println("Account with ID [" + account.accountId + "] already exists");
                     }
                     break;
                 case 3:
-                    for (User u : users) {
-                        System.out.println(u.toString());
-                    }
+                    users.forEach(u -> System.out.println(u.toString()));
                     break;
                 case 4:
-                    for (Account a : accounts.values()) {
-                        System.out.println(a.toString());
-                    }
+                    accounts.values().forEach(a -> System.out.println(a.toString()));
                     break;
+                case 5:
+                    System.out.print("Insert keyword to start search: ");
+                    String keyword = scan.next();
+                    List<User> usersByName = users.stream()
+                                                .filter(u -> u.name.contains(keyword))
+                                                .map(u -> u)
+                                                .collect(Collectors.toList());
+                    usersByName.forEach(u -> System.out.println(u.toString()));
                 default:
                     break;
             }
