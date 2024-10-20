@@ -1,3 +1,5 @@
+package dao;
+
 import java.util.Random;
 
 public class SQLConstants {
@@ -5,10 +7,11 @@ public class SQLConstants {
     public static final String SQL_CONNECTION = "jdbc:mysql://localhost:3306/unac?serverTimezone=UTC";
     public static final String SQL_USER = "root";
     public static final String SQL_PASSWORD = "Mysql123#";
+    public static final String SQL_DB_CLASS = "com.mysql.jdbc.Driver";
 
     public static final String SQL_GET_USER_BY_CREDENTIALS = "SELECT * FROM user WHERE username = ? AND password = ?";
     public static final String SQL_GET_USER_BY_USERNAME = "SELECT COUNT(*) as usercount FROM user WHERE username = ?";
-    public static final String SQL_GET_USERS = "SELECT first_name, last_name, email, username, type FROM user WHERE type <> 'Admin'";
+    public static final String SQL_GET_USERS = "SELECT first_name, last_name, email, username, type FROM user WHERE type <> 'Admin' AND (first_name LIKE ? OR last_name LIKE ?)";
 
     public static final String SQL_CREATE_USER = "INSERT INTO user (first_name, last_name, email, username, password, type) VALUES (?, ?, ?, ?, ?, ?)";
 
