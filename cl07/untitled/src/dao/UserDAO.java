@@ -31,6 +31,7 @@ public class UserDAO {
                 user.setLastName(resultSet.getString("last_name"));
                 user.setEmail(resultSet.getString("email"));
                 user.setUsername(resultSet.getString("username"));
+                user.setPassword(resultSet.getString("password"));
                 user.setType(resultSet.getString("type"));
                 users.add(user);
             }
@@ -51,6 +52,22 @@ public class UserDAO {
             statement.setString(4, user.getUsername());
             statement.setString(5, user.getPassword());
             statement.setString(6, user.getType());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void editUser(User user) {
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(SQLConstants.SQL_EDIT_USER);
+            statement.setString(1, user.getFirstName());
+            statement.setString(2, user.getLastName());
+            statement.setString(3, user.getEmail());
+            statement.setString(4, user.getPassword());
+            statement.setString(5, user.getType());
+            statement.setString(6, user.getUsername());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

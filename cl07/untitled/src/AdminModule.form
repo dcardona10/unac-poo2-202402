@@ -110,7 +110,7 @@
           <grid id="dad83" binding="pnlEditUser" layout-manager="GridLayoutManager" row-count="2" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <tabbedpane title="Edit User"/>
+              <tabbedpane title="Edit Users"/>
             </constraints>
             <properties/>
             <border type="none"/>

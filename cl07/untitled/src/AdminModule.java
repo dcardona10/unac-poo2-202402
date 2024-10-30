@@ -77,7 +77,7 @@ public class AdminModule implements ActionListener {
                     user.setFirstName(txtFirstName.getText());
                     user.setLastName(txtLastName.getText());
                     user.setEmail(txtEmail.getText());
-                    user.setUsername(createUsername(txtFirstName.getText(), txtLastName.getText()));
+                    user.setUsername(SQLConstants.createUsername(txtFirstName.getText(), txtLastName.getText()));
                     user.setPassword(SQLConstants.createPassword());
                     user.setType(type);
                     userDAO.createUser(user);
@@ -102,33 +102,16 @@ public class AdminModule implements ActionListener {
         }
         for (int i = 0; i < btnEditList.size(); i++) {
             if (btnClicked.equals(btnEditList.get(i))) {
-                btnEditClick();
+                btnEditClick(i);
                 return;
             }
         }
         for (int i = 0; i < btnDeleteList.size(); i++) {
             if (btnClicked.equals(btnDeleteList.get(i))) {
-                btnDeleteClick();
+                btnDeleteClick(i);
                 return;
             }
         }
-    }
-
-    private String createUsername(String firstName, String lastName) throws SQLException {
-        String username = firstName.toLowerCase().charAt(0) + lastName.toLowerCase();
-        try {
-            Connection connection = DriverManager.getConnection(SQLConstants.SQL_CONNECTION, SQLConstants.SQL_USER, SQLConstants.SQL_PASSWORD);
-            PreparedStatement queryUsernameStatement = connection.prepareStatement(SQLConstants.SQL_GET_USER_BY_USERNAME);
-            queryUsernameStatement.setString(1, username);
-            ResultSet resultSet = queryUsernameStatement.executeQuery();
-            if (resultSet.getInt("usercount") >= 1) {
-                username += (resultSet.getInt("usercount") + 1);
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(pnlMain, e.getMessage());
-        }
-
-        return username;
     }
 
     private void loadData(String keyword) {
@@ -241,11 +224,16 @@ public class AdminModule implements ActionListener {
         }
     }
 
-    private void btnEditClick() {
-        //
+    private void btnEditClick(int index) {
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setContentPane(new EditUser(users.get(index), index).getPnlMain());
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 
-    private void btnDeleteClick() {
-        //
+    private void btnDeleteClick(int index) {
+        JOptionPane.showMessageDialog(pnlMain, "Delete User " + users.get(index).getUsername());
     }
 }
